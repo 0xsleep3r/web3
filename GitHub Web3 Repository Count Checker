@@ -1,0 +1,35 @@
+const Web3 = require('web3');
+
+// Connect to a local or remote Ethereum node
+const web3 = new Web3('http://localhost:8545');
+
+// Set up a GitHub contract ABI and address
+const contractABI = [{
+  "constant": true,
+  "inputs": [{"name": "username", "type": "string"}],
+  "name": "getReposCount",
+  "outputs": [{"name": "", "type": "uint256"}],
+  "payable": false,
+  "stateMutability": "view",
+  "type": "function"
+}];
+
+const contractAddress = '0x123456789abcdef';
+
+// Create a contract instance
+const gitHubContract = new web3.eth.Contract(contractABI, contractAddress);
+
+// Function to get the number of repositories for a given GitHub username
+async function getRepositoryCount(username) {
+  try {
+    const count = await gitHubContract.methods.getReposCount(username).call();
+    console.log(`The user ${username} has ${count} repositories.`);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+// Call the function with a sample username
+getRepositoryCount('octocat');
+
+// by sleep3r.eth
